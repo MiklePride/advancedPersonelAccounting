@@ -2,7 +2,7 @@
 {
     static void Main(string[] args)
     {
-        Dictionary<string, string> dossiers = new Dictionary<string, string>();
+        Dictionary<int, string> dossiers = new Dictionary<int, string>();
         bool isExit = false;
 
         while (isExit == false)
@@ -21,7 +21,7 @@
                     DisplayDossierOnScreen(dossiers);
                     break;
                 case "3":
-                    DeliteDossier(dossiers);
+                    DeleteDossier(dossiers);
                     break;
                 case "4":
                     isExit = true;
@@ -30,43 +30,55 @@
                     Console.WriteLine("Такой команды нет.");
                     break;
             }
-        }
-    }
-
-    static void DeliteDossier(Dictionary<string, string> dossiers)
-    {
-        Console.WriteLine("Введите ФИО для удаления досье:");
-        string fullName = Console.ReadLine();
-
-        if (dossiers.ContainsKey(fullName))
-        {
-            dossiers.Remove(fullName);
-            Console.WriteLine("Досье удалено! Для продолжения нажмите любую клавишу...");
+            Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
             Console.ReadKey();
             Console.Clear();
         }
+    }
+
+    static void DeleteDossier(Dictionary<int, string> dossiers)
+    {
+        if (dossiers.Count == 0)
+        {
+            Console.WriteLine("Архив пуст! Сначала добавьте досье!");
+        }
         else
         {
-            Console.WriteLine("Такого досье не существует!!!");
-            DeliteDossier(dossiers);
+            DisplayDossierOnScreen(dossiers);
+
+            Console.WriteLine("\nВведите номер досье для удаления:");
+            int numberDossier = 0;
+            string userInputNumber = Console.ReadLine();
+            bool isNumber = int.TryParse(userInputNumber, out numberDossier);
+            
+            if (isNumber)
+            {
+                if (dossiers.ContainsKey(numberDossier))
+                {
+                    dossiers.Remove(numberDossier);
+                    Console.WriteLine("Досье удалено!");
+                }
+                else
+                {
+                    Console.WriteLine("Такого досье не существует!!!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Введеные данные не корректны.");
+            }
         }
     }
 
-    static void DisplayDossierOnScreen(Dictionary<string, string> dossiers)
+    static void DisplayDossierOnScreen(Dictionary<int, string> dossiers)
     {
-        int numberDossier = 0;
-
         foreach (var dossier in dossiers)
         {
-            numberDossier++;
-            Console.Write($"№{numberDossier}. {dossier.Key} - {dossier.Value},");
+            Console.Write($"{dossier.Key}){dossier.Value}, ");
         }
-        Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
-        Console.ReadKey();
-        Console.Clear();
     }
 
-    static void AddDossier(Dictionary<string,string> dossiers)
+    static void AddDossier(Dictionary<int, string> dossiers)
     {
         Console.WriteLine("Введите ФИО:");
         string fullName = Console.ReadLine();
@@ -74,10 +86,8 @@
         Console.WriteLine("Введите должность:");
         string job = Console.ReadLine();
 
-        dossiers.Add(fullName, job);
+        dossiers.Add(dossiers.Count + 1, $" {fullName} - {job}");
 
-        Console.WriteLine("Досье добавлено в базу! Нажмите любую кнопку для продолжения...");
-        Console.ReadKey();
-        Console.Clear();
+        Console.WriteLine("Досье добавлено в базу!");
     }
 }
