@@ -59,9 +59,9 @@
         foreach (var dossier in dossiers)
         {
             numberDossier++;
-            Console.WriteLine($"№{numberDossier}. {dossier.Key} - {dossier.Value}");
+            Console.Write($"№{numberDossier}. {dossier.Key} - {dossier.Value},");
         }
-        Console.WriteLine("Для продолжения нажмите любую клавишу...");
+        Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
         Console.ReadKey();
         Console.Clear();
     }
